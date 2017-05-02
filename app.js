@@ -135,7 +135,8 @@ function logic() {
             if (
                 (bullets[h].x + 10 > obstacles[i].x - 20) &&
                 ( bullets[h].x - 10 < obstacles[i].x + 20) &&
-                ( bullets[h].y - 10 < obstacles[i].y + 20)
+                ( bullets[h].y - 10 < obstacles[i].y + 20) &&
+                (bullets[h].y + 10 > obstacles[i].y - 20)
             ) {
                 rate++;
                 bullets.splice(h, 1);
