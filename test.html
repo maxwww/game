@@ -1,0 +1,35 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <title>Пинг-понг</title>
+</head>
+<body>
+
+<canvas id="starwar" width="960" height="800"></canvas>
+
+<script>
+    var canvasBlock = document.getElementById('starwar');
+    var ctx = canvasBlock.getContext('2d');
+
+    ctx.fillStyle = '#eeeeee';
+    ctx.fillRect(0, 0, 960, 600);
+    ctx.beginPath();
+    ctx.arc(20, 20, 20, 0, 2 * Math.PI);
+    ctx.fillStyle = 'red';
+    ctx.fill();
+
+
+    ctx.beginPath();
+    ctx.arc(10, 10, 10, 0, 2 * Math.PI);
+    ctx.fillStyle = '#fff';
+    ctx.fill();
+
+
+
+</script>
+
+
+
+</body>
+</html>
