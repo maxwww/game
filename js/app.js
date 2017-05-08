@@ -47,7 +47,7 @@ function Player(speed) {
     this.div.style.width = '72px';
     this.div.style.top = (GAME_PlASE_HEIGHT - 104) / 2 + 'px';
     this.div.style.left = (GAME_PlASE_WIDTH - 72) / 2 + 'px';
-    this.div.style.backgroundImage = 'url("/img/ship.png")';
+    this.div.style.backgroundImage = 'url("img/ship.png")';
 
     document.getElementById('gameplace').appendChild(this.div);
 }
@@ -173,7 +173,7 @@ function Enemy(stability, speed, img, height, width) {
     this.div.style.width = width + 'px';
     this.div.style.top = (-height) + 'px';
     this.div.style.left = Math.random() * (GAME_PlASE_WIDTH - width) + 'px';
-    this.div.style.backgroundImage = 'url("/img/' + img + '")';
+    this.div.style.backgroundImage = 'url("img/' + img + '")';
 
     document.getElementById('gameplace').appendChild(this.div);
 }
@@ -186,7 +186,7 @@ function Bullet(speed, top, left, img, height, width) {
     this.div.style.width = width + 'px';
     this.div.style.top = top + 'px';
     this.div.style.left = left + 'px';
-    this.div.style.backgroundImage = 'url("/img/' + img + '")';
+    this.div.style.backgroundImage = 'url("img/' + img + '")';
 
     document.getElementById('gameplace').appendChild(this.div);
 }
