@@ -11,6 +11,8 @@ function Game() {
     this.score = 0;
     this.lastTime = 0;
     this.lastFire = 0;
+    this.isBonus = false;
+    this.lastBonusTime = 0;
 
 }
 
@@ -26,10 +28,36 @@ Game.prototype.PLAYER_CONSTANS = {
     IMG: 'img/ship.png'
 };
 Game.prototype.BULLET_CONSTANS = {
-    SPEED: 700,
-    WIDTH: 10,
-    HEIGHT: 24,
-    IMG: 'img/bullet_s.png',
+    properties: [
+        {
+            speed: 700,
+            size: {
+                width: 10,
+                height: 24,
+            },
+            img: 'img/bullet_s.png',
+            direction: 0
+        },
+        {
+            speed: 700,
+            size: {
+                width: 15,
+                height: 22,
+            },
+            img: 'img/bullet_s_r.png',
+            direction: 300
+        },
+        {
+            speed: 700,
+            size: {
+                width: 15,
+                height: 22,
+            },
+            img: 'img/bullet_s_l.png',
+            direction: -300
+        }
+    ],
+
     DELAY: 75
 };
 Game.prototype.ENEMY_CONSTANS = {
@@ -86,17 +114,7 @@ Game.prototype.init = function () {
         top: (this.FIELD_CONSTANS.HEIGHT - this.player.properties[0].size.height) / 2,
         left: (this.FIELD_CONSTANS.WIDTH - this.player.properties[0].size.width) / 2
     });
-    this.bullet = new Bullet([
-            {
-                speed: this.BULLET_CONSTANS.SPEED,
-                size: {
-                    width: this.BULLET_CONSTANS.WIDTH,
-                    height: this.BULLET_CONSTANS.HEIGHT,
-                },
-                img: this.BULLET_CONSTANS.IMG
-            }
-        ],
-        Entity.TYPE_ARRAY
+    this.bullet = new Bullet(this.BULLET_CONSTANS.properties, Entity.TYPE_ARRAY
     );
     this.enemy = new Enemy(this.ENEMY_CONSTANS.properties, Entity.TYPE_ARRAY);
     this.reset();
@@ -110,7 +128,6 @@ Game.prototype.init = function () {
 };
 
 Game.prototype.reset = function () {
-    console.dir(25);
     this.player.move(
         {
             top: (this.FIELD_CONSTANS.HEIGHT - this.player.properties[0].size.height) / 2,
@@ -124,6 +141,8 @@ Game.prototype.reset = function () {
     this.lastTime = Date.now();
     this.score = 0;
     this.gameTime = 0;
+    this.isBonus = false;
+    this.lastBonusTime = 0;
     document.getElementById('game-over').style.display = 'none';
 
 };
@@ -140,7 +159,9 @@ Game.prototype.loop = function () {
     if (!this.isGameOver) {
         this.handleInput(delta);
         this.checkCollisions();
+        this.checkBonus(delta);
     }
+
     document.getElementById('score').innerHTML = this.score;
     requestAnimationFrame(function () {
         _this.loop();
@@ -197,10 +218,29 @@ Game.prototype.handleInput = function (delta) {
     if (input.isDown('SPACE') && !this.isGameOver && Date.now() - this.lastFire > this.BULLET_CONSTANS.DELAY) {
         let x = (this.player.getPos()).left + (this.player.properties[0].size.width - this.bullet.properties[0].size.width) / 2;
         let y = (this.player.getPos()).top - this.bullet.properties[0].size.height;
-        this.bullet.addToField({
-            left: x,
-            top: y
-        });
+        this.bullet.addToField(
+            {
+                left: x,
+                top: y
+            },
+            0
+        );
+        if (this.isBonus) {
+            this.bullet.addToField(
+                {
+                    left: x,
+                    top: y
+                },
+                1
+            );
+            this.bullet.addToField(
+                {
+                    left: x,
+                    top: y
+                },
+                2
+            );
+        }
         this.lastFire = Date.now();
     }
 
@@ -209,9 +249,10 @@ Game.prototype.handleInput = function (delta) {
 Game.prototype.moveBullet = function (delta) {
     let bullets = this.bullet.div;
     for (let i = 0; i < bullets.length; i++) {
-        let y = (this.bullet.getPos(i)).top - delta * this.bullet.properties[0].speed;
+        let y = (this.bullet.getPos(i)).top - delta * this.bullet.properties[bullets[i]['kind']].speed;
+        let x = (this.bullet.getPos(i)).left + delta * this.bullet.properties[bullets[i]['kind']].direction;
         this.bullet.move({
-            left: false,
+            left: x,
             top: y
         }, i);
         if (!this.bullet.inField(bullets[i], {
@@ -274,4 +315,14 @@ Game.prototype.gameOver = function () {
     this.isGameOver = true;
     document.getElementById('game-over').style.display = 'block';
     this.player.div.style.display = 'none';
+};
+
+Game.prototype.checkBonus = function (delta) {
+    if (parseInt(this.gameTime, 10) % 10 == 0 && (this.gameTime - this.lastBonusTime) > 2) {
+        this.isBonus = true;
+        this.lastBonusTime = this.gameTime;
+    }
+    if (this.isBonus && (this.gameTime - this.lastBonusTime) > 5) {
+        this.isBonus = false;
+    }
 };
