@@ -228,14 +228,14 @@ Game.prototype.handleInput = function (delta) {
         if (this.isBonus) {
             this.bullet.addToField(
                 {
-                    left: x,
+                    left: x+20,
                     top: y
                 },
                 1
             );
             this.bullet.addToField(
                 {
-                    left: x,
+                    left: x-20,
                     top: y
                 },
                 2
@@ -317,7 +317,7 @@ Game.prototype.gameOver = function () {
     this.player.div.style.display = 'none';
 };
 
-Game.prototype.checkBonus = function (delta) {
+Game.prototype.checkBonus = function () {
     if (parseInt(this.gameTime, 10) % 10 == 0 && (this.gameTime - this.lastBonusTime) > 2) {
         this.isBonus = true;
         this.lastBonusTime = this.gameTime;
