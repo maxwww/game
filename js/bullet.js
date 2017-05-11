@@ -1,4 +1,4 @@
-function Bullet(speed, size, img, type) {
+function Bullet(properties) {
     Plenty.apply(this, arguments);
 }
 Bullet.prototype = Object.create(Plenty.prototype);
@@ -22,9 +22,11 @@ Bullet.prototype.isBoom = function (enemy) {
                 this.removeDiv(j);
                 this.div.splice(j, 1);
                 j--;
+                console.dir(enemy.div[i]);
                 enemy.div[i].stability--;
                 if (enemy.div[i].stability === 0) {
                     counter++;
+
                     enemy.removeDiv(i);
                     enemy.div.splice(i, 1)
                     i--;

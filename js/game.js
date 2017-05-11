@@ -22,15 +22,21 @@ Game.prototype.FIELD_CONSTANS = {
     HEIGHT: 600
 };
 Game.prototype.PLAYER_CONSTANS = {
-    SPEED: 400,
-    WIDTH: 72,
-    HEIGHT: 104,
-    IMG: 'img/ship.png'
+    properties: [
+        {
+            speed: 400,
+            size: {
+                width: 72,
+                height: 104,
+            },
+            img: 'img/ship.png'
+        }
+    ]
 };
 Game.prototype.BULLET_CONSTANS = {
     properties: [
         {
-            speed: 700,
+            speed: 500,
             size: {
                 width: 10,
                 height: 24,
@@ -39,22 +45,22 @@ Game.prototype.BULLET_CONSTANS = {
             direction: 0
         },
         {
-            speed: 700,
+            speed: 500,
             size: {
                 width: 15,
                 height: 22,
             },
             img: 'img/bullet_s_r.png',
-            direction: 300
+            direction: 200
         },
         {
-            speed: 700,
+            speed: 500,
             size: {
                 width: 15,
                 height: 22,
             },
             img: 'img/bullet_s_l.png',
-            direction: -300
+            direction: -200
         }
     ],
 
@@ -98,25 +104,13 @@ Game.prototype.init = function () {
 
     let _this = this;
 
-    this.player = new Player([
-            {
-                speed: this.PLAYER_CONSTANS.SPEED,
-                size: {
-                    width: this.PLAYER_CONSTANS.WIDTH,
-                    height: this.PLAYER_CONSTANS.HEIGHT,
-                },
-                img: this.PLAYER_CONSTANS.IMG
-            }
-        ],
-        Entity.TYPE_SINGLE
-    );
+    this.player = new Player(this.PLAYER_CONSTANS.properties);
     this.player.addToField({
         top: (this.FIELD_CONSTANS.HEIGHT - this.player.properties[0].size.height) / 2,
         left: (this.FIELD_CONSTANS.WIDTH - this.player.properties[0].size.width) / 2
     });
-    this.bullet = new Bullet(this.BULLET_CONSTANS.properties, Entity.TYPE_ARRAY
-    );
-    this.enemy = new Enemy(this.ENEMY_CONSTANS.properties, Entity.TYPE_ARRAY);
+    this.bullet = new Bullet(this.BULLET_CONSTANS.properties);
+    this.enemy = new Enemy(this.ENEMY_CONSTANS.properties);
     this.reset();
 
     document.getElementById('play-again').addEventListener('click', function () {
@@ -136,7 +130,7 @@ Game.prototype.reset = function () {
     );
     this.enemy.removeAllDivs();
     this.bullet.removeAllDivs();
-    this.player.div.style.display = '';
+    this.player.div[0].style.display = '';
     this.isGameOver = false;
     this.lastTime = Date.now();
     this.score = 0;
@@ -223,22 +217,28 @@ Game.prototype.handleInput = function (delta) {
                 left: x,
                 top: y
             },
-            0
+            {
+                kind: 0
+            }
         );
         if (this.isBonus) {
             this.bullet.addToField(
                 {
-                    left: x+20,
+                    left: x + 20,
                     top: y
                 },
-                1
+                {
+                    kind: 1
+                }
             );
             this.bullet.addToField(
                 {
-                    left: x-20,
+                    left: x - 20,
                     top: y
                 },
-                2
+                {
+                    kind: 2
+                }
             );
         }
         this.lastFire = Date.now();
@@ -249,8 +249,10 @@ Game.prototype.handleInput = function (delta) {
 Game.prototype.moveBullet = function (delta) {
     let bullets = this.bullet.div;
     for (let i = 0; i < bullets.length; i++) {
-        let y = (this.bullet.getPos(i)).top - delta * this.bullet.properties[bullets[i]['kind']].speed;
-        let x = (this.bullet.getPos(i)).left + delta * this.bullet.properties[bullets[i]['kind']].direction;
+        let speed = Math.sqrt(Math.pow(this.bullet.properties[bullets[i]['kind']].speed, 2) - Math.pow(this.bullet.properties[bullets[i]['kind']].direction, 2));
+        let y = (this.bullet.getPos(i)).top - delta * speed;
+        let x = (this.bullet.getPos(i)).left + delta *  this.bullet.properties[bullets[i]['kind']].direction;
+        console.dir(this.bullet.properties[bullets[i]['kind']].direction);
         this.bullet.move({
             left: x,
             top: y
@@ -314,7 +316,7 @@ Game.prototype.checkCollisions = function () {
 Game.prototype.gameOver = function () {
     this.isGameOver = true;
     document.getElementById('game-over').style.display = 'block';
-    this.player.div.style.display = 'none';
+    this.player.div[0].style.display = 'none';
 };
 
 Game.prototype.checkBonus = function () {

@@ -1,4 +1,4 @@
-function Plenty(speed, size, img, type) {
+function Plenty(properties) {
     Entity.apply(this, arguments);
 }
 Plenty.prototype = Object.create(Entity.prototype);

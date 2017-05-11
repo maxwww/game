@@ -1,4 +1,4 @@
-function Player(speed, size, img, type) {
+function Player(properties) {
     Entity.apply(this, arguments);
     this.lasFire = 0;
 }
@@ -14,7 +14,7 @@ Player.prototype.isCrashed = function (enemy) {
         let width = parseFloat(enemy.div[i].style.width);
         let height = parseFloat(enemy.div[i].style.height);
 
-        if (Plenty.prototype.inField.call(null, this.div, {
+        if (Plenty.prototype.inField.call(null, this.div[0], {
                 x: x,
                 y: y,
                 width: width,

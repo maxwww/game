@@ -1,4 +1,4 @@
-function Enemy() {
+function Enemy(properties) {
     Plenty.apply(this, arguments);
 }
 Enemy.prototype = Object.create(Plenty.prototype);
@@ -12,11 +12,10 @@ Enemy.prototype.addToField = function (kind = 0, fieldWidth) {
         top: top,
         left: left
     };
-    Plenty.prototype.addToField.call(this, pos, kind);
-};
+    let params = {
+        kind: kind,
+        stability: this.properties[kind].stability
+    };
+    Plenty.prototype.addToField.call(this, pos, params);
 
-Enemy.prototype.createDiv = function (pos, kind) {
-    let div = Entity.prototype.createDiv.apply(this, arguments);
-    div.stability = this.properties[kind].stability;
-    return div;
 };
