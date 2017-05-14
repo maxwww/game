@@ -1,4 +1,4 @@
-function Plenty(properties) {
+function Plenty() {
     Entity.apply(this, arguments);
 }
 Plenty.prototype = Object.create(Entity.prototype);

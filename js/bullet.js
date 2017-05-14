@@ -1,5 +1,37 @@
-function Bullet(properties) {
+function Bullet() {
     Plenty.apply(this, arguments);
+    this.PROPERTIES = [
+        {
+            speed: 500,
+            size: {
+                width: 10,
+                height: 24,
+            },
+            img: 'img/bullet_s.png',
+            direction: 0,
+            delay: 75
+        },
+        {
+            speed: 500,
+            size: {
+                width: 15,
+                height: 22,
+            },
+            img: 'img/bullet_s_r.png',
+            direction: 200,
+            delay: 75
+        },
+        {
+            speed: 500,
+            size: {
+                width: 15,
+                height: 22,
+            },
+            img: 'img/bullet_s_l.png',
+            direction: -200,
+            delay: 75
+        }
+    ];
 }
 Bullet.prototype = Object.create(Plenty.prototype);
 Bullet.prototype.constructor = Bullet;
@@ -22,7 +54,6 @@ Bullet.prototype.isBoom = function (enemy) {
                 this.removeDiv(j);
                 this.div.splice(j, 1);
                 j--;
-                console.dir(enemy.div[i]);
                 enemy.div[i].stability--;
                 if (enemy.div[i].stability === 0) {
                     counter++;

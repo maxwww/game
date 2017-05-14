@@ -1,10 +1,21 @@
-function Player(properties) {
+function Player() {
     Entity.apply(this, arguments);
+    this.PROPERTIES = [
+        {
+            speed: 400,
+            size: {
+                width: 72,
+                height: 104,
+            },
+            img: 'img/ship.png'
+        }
+    ];
     this.lasFire = 0;
 }
 
 Player.prototype = Object.create(Entity.prototype);
 Player.prototype.constructor = Player;
+
 
 Player.prototype.isCrashed = function (enemy) {
     let result = false;

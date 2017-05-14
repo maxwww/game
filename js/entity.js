@@ -1,5 +1,4 @@
-function Entity(properties) {
-    this.properties = properties;
+function Entity() {
     this.div = [];
 }
 
@@ -11,11 +10,11 @@ Entity.prototype.addToField = function (pos, params = {}) {
     let kind = params.kind ? params.kind : 0;
     div.kind = kind;
     div.style.position = 'absolute';
-    div.style.width = this.properties[kind].size.width + 'px';
-    div.style.height = this.properties[kind].size.height + 'px';
+    div.style.width = this.PROPERTIES[kind].size.width + 'px';
+    div.style.height = this.PROPERTIES[kind].size.height + 'px';
     div.style.top = pos.top + 'px';
     div.style.left = pos.left + 'px';
-    div.style.backgroundImage = 'url("' + this.properties[kind].img + '")';
+    div.style.backgroundImage = 'url("' + this.PROPERTIES[kind].img + '")';
     document.getElementById('gameplace').appendChild(div);
     this.div.push(div);
 };
