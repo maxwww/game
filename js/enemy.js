@@ -1,37 +1,38 @@
 function Enemy() {
     Plenty.apply(this, arguments);
-    this.PROPERTIES = [
-        {
-            speed: 100,
-            size: {
-                width: 96,
-                height: 88,
-            },
-            img: 'img/asteroid.png',
-            stability: 1
-        },
-        {
-            speed: 50,
-            size: {
-                width: 186,
-                height: 184,
-            },
-            img: 'img/asteroid_b.png',
-            stability: 5
-        },
-        {
-            speed: 200,
-            size: {
-                width: 42,
-                height: 40,
-            },
-            img: 'img/asteroid_f.png',
-            stability: 1
-        }
-    ];
 }
 Enemy.prototype = Object.create(Plenty.prototype);
 Enemy.prototype.constructor = Enemy;
+
+Enemy.prototype.PROPERTIES = [
+    {
+        speed: 100,
+        size: {
+            width: 96,
+            height: 88,
+        },
+        img: 'img/asteroid.png',
+        stability: 1
+    },
+    {
+        speed: 50,
+        size: {
+            width: 186,
+            height: 184,
+        },
+        img: 'img/asteroid_b.png',
+        stability: 5
+    },
+    {
+        speed: 200,
+        size: {
+            width: 42,
+            height: 40,
+        },
+        img: 'img/asteroid_f.png',
+        stability: 1
+    }
+];
 
 Enemy.prototype.addToField = function (kind = 0, fieldWidth) {
     let maxLeft = fieldWidth - this.PROPERTIES[kind].size.width;

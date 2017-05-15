@@ -1,40 +1,38 @@
 function Bullet() {
     Plenty.apply(this, arguments);
-    this.PROPERTIES = [
-        {
-            speed: 500,
-            size: {
-                width: 10,
-                height: 24,
-            },
-            img: 'img/bullet_s.png',
-            direction: 0,
-            delay: 75
-        },
-        {
-            speed: 500,
-            size: {
-                width: 15,
-                height: 22,
-            },
-            img: 'img/bullet_s_r.png',
-            direction: 200,
-            delay: 75
-        },
-        {
-            speed: 500,
-            size: {
-                width: 15,
-                height: 22,
-            },
-            img: 'img/bullet_s_l.png',
-            direction: -200,
-            delay: 75
-        }
-    ];
 }
 Bullet.prototype = Object.create(Plenty.prototype);
 Bullet.prototype.constructor = Bullet;
+
+Bullet.prototype.PROPERTIES = [
+    {
+        speed: 500,
+        size: {
+            width: 10,
+            height: 24,
+        },
+        img: 'img/bullet_s.png',
+        direction: 0
+    },
+    {
+        speed: 500,
+        size: {
+            width: 15,
+            height: 22,
+        },
+        img: 'img/bullet_s_r.png',
+        direction: 200
+    },
+    {
+        speed: 500,
+        size: {
+            width: 15,
+            height: 22,
+        },
+        img: 'img/bullet_s_l.png',
+        direction: -200
+    }
+];
 
 Bullet.prototype.isBoom = function (enemy) {
     let counter = 0;
@@ -59,7 +57,7 @@ Bullet.prototype.isBoom = function (enemy) {
                     counter++;
 
                     enemy.removeDiv(i);
-                    enemy.div.splice(i, 1)
+                    enemy.div.splice(i, 1);
                     i--;
                 }
                 break;
@@ -67,4 +65,8 @@ Bullet.prototype.isBoom = function (enemy) {
         }
     }
     return counter;
+};
+
+Bullet.prototype.moveAllDivs = function (delta) {
+    Plenty.prototype.moveAllDivs.call(this, -delta);
 };
